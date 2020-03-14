@@ -1,7 +1,7 @@
-const path = require('path')
-const fs = require('fs')
-const babel = require('@babel/core')
-const generator = require('./generator')
+#!/usr/bin/env node
+import path from 'path'
+import babel from '@babel/core'
+import { generateTypes } from './generator'
 
 const inputFile = process.argv[2]
 
@@ -13,9 +13,12 @@ if (!inputFile) {
 const absPath = path.resolve(process.cwd(), inputFile)
 const transpiled = babel.transformFileSync(absPath, {
   plugins: ['@babel/plugin-transform-modules-commonjs']
-}).code
+})?.code
 
-// tslint:disable-next-line: no-eval
-const schema = eval(transpiled)
+if (transpiled) {
+  const schema = eval(transpiled)
 
-console.log(generator.generateTypes(schema))
+  console.log(generateTypes(schema))
+} else {
+  throw new Error('No transpiled result!')
+}

@@ -4,35 +4,35 @@ import path = require('path')
 import slash = require('slash')
 import camelCase = require('camelcase')
 
-export function toPascalCase (name: string) {
+export function toPascalCase (name: string): string {
   return camelCase(name, { pascalCase: true })
 }
 
-export function getTemplate (name: string, params: string[] = []) {
+export function getTemplate (name: string, parameters: unknown[] = []): string {
   const template = readFile(
     path.resolve(__dirname, '..', '__templates__', `${name}.template`)
   )
 
-  return util.format(template, ...params)
+  return util.format(template, ...parameters)
 }
 
-export function readFile (filePath: string) {
+export function readFile (filePath: string): string {
   return fs.readFileSync(filePath).toString()
 }
 
-export function pipe (...functions: Function[]) {
-  return function pipeline<T> (args: T) {
-    return functions.reduce<T>(function reducer (arg, fn) {
-      return fn(arg)
-    }, args)
-  }
+export function pipe<T>(...functions: ((a: T) => T)[]): (a: T) => T {
+  return arguments_ => (
+    functions.reduce((argument, fn) => (
+      fn(argument)
+    ), arguments_)
+  );
 }
 
-export function resolvePath (modulePath: string, basePath?: string) {
+export function resolvePath (modulePath: string, basePath: string): string {
   return require.resolve(modulePath, { paths: [basePath] })
 }
 
-export function validatePath (pathToValidate: string) {
+export function validatePath (pathToValidate: string): string {
   if (!fs.existsSync(pathToValidate)) {
     throw new Error(`Not a valid path: ${pathToValidate}`)
   }
@@ -40,20 +40,20 @@ export function validatePath (pathToValidate: string) {
   return pathToValidate
 }
 
-export function toRelativePath (from: string, to: string) {
+export function toRelativePath (from: string, to: string): string {
   return path.relative(from, to)
 }
 
-export function toForwardSlash (str: string) {
-  return slash(str)
+export function toForwardSlash (string: string): string {
+  return slash(string)
 }
 
-export function stripExtension (str: string) {
-  const parsed = path.parse(str)
+export function stripExtension (string: string): string {
+  const parsed = path.parse(string)
 
   return path.join(parsed.root, parsed.dir, parsed.name)
 }
 
-export function addDotSlash (str: string) {
-  return str === '.' ? str : `./${str}`
+export function addDotSlash (string: string): string {
+  return string === '.' ? string : `./${string}`
 }

@@ -1,13 +1,20 @@
-# orbit-type-generator
+# @evrone/orbit-type-generator
 
-[![npm](https://img.shields.io/npm/v/orbit-type-generator.svg)](https://www.npmjs.com/package/orbit-type-generator)
-[![Travis](https://img.shields.io/travis/exivity/react-orbitjs.svg)](https://travis-ci.org/exivity/react-orbitjs)
-[![Codecov](https://img.shields.io/codecov/c/github/exivity/react-orbitjs.svg)](https://codecov.io/gh/exivity/react-orbitjs)
-[![Code Climate](https://img.shields.io/codeclimate/maintainability/exivity/react-orbitjs.svg)](https://codeclimate.com/github/exivity/react-orbitjs)
-[![Gitter](https://badges.gitter.im/exivity/react-orbitjs.svg)](https://gitter.im/exivity/react-orbitjs)
+[![npm](https://img.shields.io/npm/v/@evrone/orbit-type-generator.svg)](https://www.npmjs.com/package/@evrone/orbit-type-generator)
+[![Travis](https://img.shields.io/travis/evrone/orbit-type-generator.svg)](https://travis-ci.org/evrone/orbit-type-generator)
+[![Codecov](https://img.shields.io/codecov/c/github/evrone/orbit-type-generator.svg)](https://codecov.io/gh/evrone/orbit-type-generator)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/evrone/orbit-type-generator.svg)](https://codeclimate.com/github/evrone/orbit-type-generator)
 
-> [TypeScript](https://www.typescriptlang.org/) type generator for [Orbit](http://orbitjs.com/) schema definitions.
+> [TypeScript](https://www.typescriptlang.org/) type generator for [Orbit](https://orbitjs.com/) schema definitions.
+>
+> Fork of https://github.com/exivity/react-orbitjs/tree/next/packages/orbit-type-generator
 
+Feel free to start watching and ⭐ project in order not miss the release or updates.
+
+<a href="https://evrone.com/?utm_source=orbit_type_generator">
+  <img src="https://user-images.githubusercontent.com/417688/34437029-dbfe4ee6-ecab-11e7-9d80-2b274b4149b3.png"
+       alt="Sponsored by Evrone" width="231">
+</a>
 
 ## API
 
@@ -153,3 +160,17 @@ const types = generateTypes(schema, {
 - [x] Properly generate types for relationships
 - [ ] Option to allow extra properties (toggle attr/rel extends statements)
 - [ ] Support .ts files in CLI using on-the-fly compiling
+
+## Contributing
+
+If you want to get involved, please do so by
+[creating issues](https://github.com/evrone/orbit-type-generator/issues/new) or submitting pull requests.
+Before undertaking any major PR effort, **please** check the existing
+([open and closed](https://github.com/evrone/orbit-type-generator/issues?q=is%3Aissue)) issues.
+If there isn't one, please file a new issue so we can discuss and assign the work so effort is not duplicated.
+Thank you!
+
+#### If you need make PR
+
++ Use `yarn` and tasks from [package.json](/package.json).
++ Write tests for you changes, obvious and covering.

@@ -1,6 +1,7 @@
 import path from 'path'
-import { Schema, SchemaSettings } from '@orbit/data'
+import { Schema } from '@orbit/data'
 import { generateTypes } from '../generator'
+import { AttributeDefinition, SchemaSettings } from '../types';
 
 describe('generateTypes', () => {
   // Basic tests
@@ -184,16 +185,16 @@ describe('generateTypes', () => {
   })
 
   it('should generate attributes using the tsProperty option', async () => {
-    const definition = {
+    const definition: SchemaSettings = {
       models: {
         user: {
           attributes: {
-            username: { ts: 'AttributeDefinition' }
+            username: { ts: 'AttributeDefinition' } as AttributeDefinition
           }
         }
       }
     }
-    const types = generateTypes(new Schema(definition as any), {
+    const types = generateTypes(new Schema(definition), {
       tsProperty: 'ts'
     })
     expect(types).toContain(`import { AttributeDefinition } from "./src/types"`)

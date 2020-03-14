@@ -5,6 +5,7 @@
 # node
 *.log*
 node_modules/
+package.lock.json
 
 # artefacts
 coverage/

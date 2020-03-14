@@ -1,10 +1,10 @@
-import ts = require('typescript')
-import fs from 'fs'
+import ts from 'typescript'
+import fs, { PathLike } from 'fs'
 import { ImportDeclaration } from './types'
 
 let typeCache: ImportDeclaration[]
 
-export function resolveType (type: string) {
+export function resolveType (type: string): ImportDeclaration | undefined {
   if (typeof typeCache === 'undefined') {
     buildTypeCache()
   }
@@ -12,7 +12,7 @@ export function resolveType (type: string) {
   return typeCache.find(declaration => declaration.type === type)
 }
 
-function buildTypeCache () {
+function buildTypeCache (): void {
   const configPath = ts.findConfigFile(
     /*searchPath*/ './',
     ts.sys.fileExists,
@@ -31,7 +31,7 @@ function buildTypeCache () {
   const parseConfigHost = {
     fileExists: fs.existsSync,
     readDirectory: ts.sys.readDirectory,
-    readFile: file => fs.readFileSync(file, 'utf8'),
+    readFile: (file: PathLike | number) => fs.readFileSync(file, 'utf8'),
     useCaseSensitiveFileNames: true
   }
 
@@ -50,14 +50,14 @@ function buildTypeCache () {
   for (const sourceFile of program.getSourceFiles()) {
     if (!sourceFile.isDeclarationFile) {
       // Walk the tree to search for classes
-      ts.forEachChild(sourceFile, (nodes: ts.Declaration) =>
-        visit(nodes, sourceFile)
+      ts.forEachChild(sourceFile, nodes =>
+        visit(nodes as ts.Declaration, sourceFile)
       )
     }
   }
 
   /** visit nodes finding exported classes */
-  function visit (node: ts.Declaration, sourceFile: ts.SourceFile) {
+  function visit (node: ts.Declaration, sourceFile: ts.SourceFile): void {
     // Only consider exported nodes
     if (!isNodeExported(node)) {
       return
@@ -65,7 +65,7 @@ function buildTypeCache () {
 
     if (isType(node) && node.name) {
       // This is a top level class, get its symbol
-      let symbol = checker.getSymbolAtLocation(node.name)
+      const symbol = checker.getSymbolAtLocation(node.name)
       if (symbol) {
         typeCache.push({
           type: symbol.getName(),
@@ -76,7 +76,7 @@ function buildTypeCache () {
       // cannot be exported
     } else if (ts.isModuleDeclaration(node)) {
       // This is a namespace, visit its children
-      ts.forEachChild(node, (nodes: ts.Declaration) => visit(nodes, sourceFile))
+      ts.forEachChild(node, nodes => visit(nodes as ts.Declaration, sourceFile))
     }
   }
 }

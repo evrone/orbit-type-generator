@@ -1,24 +1,23 @@
 {
-  "name": "orbit-type-generator",
-  "version": "1.0.0-alpha.4",
+  "name": "@evrone/orbit-type-generator",
+  "version": "1.0.0-alpha.5",
   "description": "Create TypeScript definition file from a Orbit.js Schema definition",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/exivity/react-orbitjs.git"
+    "url": "git+https://github.com/evrone/orbit-type-generator.git"
   },
   "keywords": [
-    "react",
     "orbitjs",
     "typescript"
   ],
   "author": "Joram van den Boezem <joram@vandenboezem.nl>",
   "bugs": {
-    "url": "https://github.com/exivity/react-orbitjs/issues"
+    "url": "https://github.com/evrone/orbit-type-generator/issues"
   },
-  "homepage": "https://github.com/exivity/react-orbitjs#readme",
+  "homepage": "https://github.com/evrone/orbit-type-generator",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "main": "lib/index.js",
   "files": [
@@ -27,8 +26,9 @@
   ],
   "bin": "./bin/run",
   "scripts": {
-    "lint": "tslint 'src/**/*.ts'",
-    "lint:fix": "tslint 'src/**/*.ts' --fix",
+    "lint": "tsc --noEmit && eslint src --ext .ts",
+    "lint:stats": "eslint src --ext .ts --format node_modules/eslint-stats/byErrorAndWarning.js",
+    "lint:fix": "eslint src --ext .ts --fix",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "build": "rm -rf ./lib && yarn build:static && tsc",
@@ -37,26 +37,29 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.8.3",
     "camelcase": "^5.3.1",
     "slash": "^3.0.0",
-    "tslib": "^1.9.3",
-    "typescript": "^3.5.1"
+    "typescript": "^3.8.3"
   },
   "peerDependencies": {
-    "@orbit/data": "^0.15.23",
-    "@orbit/utils": "^0.15.23"
+    "@orbit/data": "^0.16.5",
+    "@orbit/utils": "^0.16.3"
   },
   "devDependencies": {
-    "@orbit/data": "^0.15.23",
-    "@orbit/utils": "^0.15.23",
-    "@types/jest": "^24.0.12",
-    "@types/node": "^11.13.8",
-    "copyfiles": "^2.1.0",
-    "jest": "^24.7.1",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
-    "tslint-config-standard": "^8.0.1"
+    "@orbit/data": "^0.16.5",
+    "@orbit/utils": "^0.16.3",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.1",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "copyfiles": "^2.2.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-unicorn": "^17.2.0",
+    "eslint-stats": "^1.0.1",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.1"
   }
 }

@@ -1,0 +1,33 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:import/typescript",
+    "plugin:unicorn/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "arrow-parens": ["error", "as-needed"],
+    "unicorn/filename-case": ["error", { "case": "camelCase" }],
+    "@typescript-eslint/ban-ts-ignore": ["error"],
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/explicit-function-return-type": ["error", {
+      "allowExpressions": true,
+      "allowHigherOrderFunctions": true,
+      "allowTypedFunctionExpressions": true
+    }],
+    "@typescript-eslint/explicit-member-accessibility": ["error", {
+      "overrides": {
+        "constructors": "no-public",
+        "properties": "no-public",
+        "methods": "no-public"
+      }
+    }],
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-non-null-assertion": "OFF",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-use-before-define": ["error", { "functions": false }]
+  }
+}
