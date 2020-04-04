@@ -40,8 +40,10 @@
     "@babel/core": "^7.8.7",
     "@babel/plugin-transform-modules-commonjs": "^7.8.3",
     "camelcase": "^5.3.1",
+    "colors": "^1.4.0",
     "slash": "^3.0.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "yargs": "^15.3.1"
   },
   "peerDependencies": {
     "@orbit/data": "^0.16.5",
@@ -50,8 +52,10 @@
   "devDependencies": {
     "@orbit/data": "^0.16.5",
     "@orbit/utils": "^0.16.3",
+    "@types/colors": "^1.2.1",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.1",
+    "@types/yargs": "^15.0.4",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
     "copyfiles": "^2.2.0",

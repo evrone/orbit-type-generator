@@ -2,6 +2,7 @@ import path from 'path'
 import { Schema } from '@orbit/data'
 import { generateTypes } from '../generator'
 import { AttributeDefinition, SchemaSettings } from '../types';
+import { toPascalCase } from "../utils";
 
 describe('generateTypes', () => {
   // Basic tests
@@ -256,6 +257,44 @@ describe('generateTypes', () => {
     expect(types).toContain(`GroupRelationships`)
     expect(types).toContain(
       `users: RecordHasManyRelationship<UserRecordIdentity>`
+    )
+  })
+
+  // Prefix tests
+
+  it('should generate types with provided prefix', async () => {
+    const definition = {
+      models: {
+        user: {
+          attributes: {
+            username: { type: 'string' }
+          },
+          relationships: {
+            group: { type: 'hasOne', model: 'group' }
+          }
+        }
+      }
+    } as const
+    const prefix = 'test'
+    const pascalCasedPrefix = toPascalCase(prefix)
+    const types = generateTypes(new Schema(definition), { prefix })
+
+    expect(types).toContain('Interfaces for the user model.')
+    expect(types).toContain('type: "user"')
+    expect(types).toContain(
+      `interface ${pascalCasedPrefix}UserRecordIdentity extends RecordIdentity`
+    )
+    expect(types).toContain(
+      `interface ${pascalCasedPrefix}UserRecord extends Record, ${pascalCasedPrefix}UserRecordIdentity`
+    )
+    expect(types).toContain(
+      `interface ${pascalCasedPrefix}UserAttributes`)
+
+    expect(types).toContain(
+      `interface ${pascalCasedPrefix}UserRelationships`
+    )
+    expect(types).toContain(
+      `RecordHasOneRelationship<${pascalCasedPrefix}GroupRecordIdentity>`
     )
   })
 })

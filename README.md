@@ -8,6 +8,8 @@
 > [TypeScript](https://www.typescriptlang.org/) type generator for [Orbit](https://orbitjs.com/) schema definitions.
 >
 > Fork of https://github.com/exivity/react-orbitjs/tree/next/packages/orbit-type-generator
+>
+> Added withPrefix param that allows to prepend generated interfaces with provided prefix in order to follow naming conventions of specific project.
 
 Feel free to start watching and ⭐ project in order not miss the release or updates.
 
@@ -83,10 +85,33 @@ export interface GroupRelationships extends Dict<RecordRelationship> {
     users: RecordHasManyRelationship<UserRecordIdentity>;
 }
 ```
-
+If you want to keep some name consistency of your project, you could also pass `withPrefix` option.
+(`I` prefix for the most cases).
+```
+generateTypes(schema, { withPrefix: 'i' })
+```
+will generate `
+```
+export interface IUserRecord extends Record, IUserRecordIdentity {
+    attributes?: IUserAttributes;
+    relationships?: IUserRelationships;
+}
+export interface IUserRecordIdentity extends RecordIdentity {
+    type: "user";
+    id: string;
+}
+export interface IUserAttributes extends Dict<any> {
+    username: string;
+}
+export interface IUserRelationships extends Dict<RecordRelationship> {
+    group: RecordHasOneRelationship<IGroupRecordIdentity>;
+}
+```
 ## CLI
 
-If you have a file `schema.js`:
+`orbit-type-generator inputFile outputFile`
+
+For example, if you have a file `schema.js`:
 
 ```js
 export default {
@@ -103,9 +128,12 @@ export default {
 you can generate the types with:
 
 ```bash
-orbit-type-generator schema.js > models.d.ts
+orbit-type-generator schema.js models.d.ts
 ```
-
+`withPrefix` option is also supported:
+```
+orbit-type-generator schema.js models.d.ts --with-prefix=i
+```
 ## Advanced
 
 ### Using TypeScript types
@@ -156,7 +184,7 @@ const types = generateTypes(schema, {
 ```
 
 ## Todo
-
+- [ ] Do not generate optional attributes and relationships, if they are not in schema. 
 - [x] Properly generate types for relationships
 - [ ] Option to allow extra properties (toggle attr/rel extends statements)
 - [ ] Support .ts files in CLI using on-the-fly compiling

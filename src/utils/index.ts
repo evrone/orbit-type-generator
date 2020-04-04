@@ -57,3 +57,11 @@ export function stripExtension (string: string): string {
 export function addDotSlash (string: string): string {
   return string === '.' ? string : `./${string}`
 }
+
+export function toPrefixedName (name: string, prefix?: string): string {
+  if (prefix) {
+    return `${prefix}-${name}`
+  }
+
+  return name
+}
