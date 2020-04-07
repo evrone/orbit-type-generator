@@ -5,8 +5,8 @@ export type Record = Omit<BaseRecord, 'type'>
 
 // Generic relationship types.
 export interface RecordHasOneRelationship<T = RecordIdentity> {
-    data: T | null;
+  data: T | null;
 }
 export interface RecordHasManyRelationship<T = RecordIdentity> {
-    data: T[];
+  data: T[];
 }

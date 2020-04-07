@@ -10,7 +10,8 @@ import {
   validatePath,
   toForwardSlash,
   stripExtension,
-  addDotSlash
+  addDotSlash,
+  toPrefixedName,
 } from './utils'
 import {
   ModelDefinition,
@@ -25,6 +26,7 @@ interface GenerateTypesOptions {
   basePath?: string;
   extraImports?: ImportDeclaration[];
   tsProperty?: keyof AttributeDefinition;
+  prefix?: string;
 }
 
 export function generateTypes (
@@ -143,32 +145,35 @@ function generateRecordType (
   let relationshipIdentifier = 'undefined'
   let attributes = ''
   let relationships = ''
+  const prefixedName = toPrefixedName(name, options.prefix);
 
   if (definition.attributes) {
-    attributes = generateAttributes(name, definition.attributes, options)
-    attributesIdentifier = `${toPascalCase(name)}Attributes`
+    attributes = generateAttributes(prefixedName, definition.attributes, options)
+    attributesIdentifier = `${toPascalCase(prefixedName)}Attributes`
   }
 
   if (definition.relationships) {
-    relationships = generateRelationships(name, definition.relationships)
-    relationshipIdentifier = `${toPascalCase(name)}Relationships`
+    relationships = generateRelationships(name, definition.relationships, options)
+    relationshipIdentifier = `${toPascalCase(prefixedName)}Relationships`
   }
 
   const model = getTemplate('record', [
     name,
-    toPascalCase(name),
-    toPascalCase(name),
+    toPascalCase(prefixedName),
+    toPascalCase(prefixedName),
     attributesIdentifier,
     relationshipIdentifier
   ])
 
-  const identity = generateIdentity(name)
+  const identity = generateIdentity(name, options)
 
   return [model, identity, attributes, relationships].join('\n')
 }
 
-function generateIdentity (name: string): string {
-  return getTemplate('identity', [toPascalCase(name), name])
+function generateIdentity (name: string, options: GenerateTypesOptions): string {
+  const prefixedName = toPrefixedName(name, options.prefix);
+
+  return getTemplate('identity', [toPascalCase(prefixedName), name])
 }
 
 function startsWithCapital (string: string): boolean {
@@ -221,8 +226,11 @@ function generateAttributes (
 
 function generateRelationships (
   name: string,
-  relationships: Dict<RelationshipDefinition>
+  relationships: Dict<RelationshipDefinition>,
+  options: GenerateTypesOptions,
 ): string {
+  const prefixedName = toPrefixedName(name, options.prefix);
+
   const relationshipList = Object.entries(relationships)
     .map(([name, definition]) => {
       let type
@@ -239,7 +247,9 @@ function generateRelationships (
 
       // A relationship model is optional.
       if (typeof definition.model === 'string') {
-        type += `<${toPascalCase(definition.model)}RecordIdentity>`
+        const prefixedDefinitionModel = toPrefixedName(definition.model, options.prefix)
+
+        type += `<${toPascalCase(prefixedDefinitionModel)}RecordIdentity>`
       }
       // TODO: definition.model may be a string[]
 
@@ -247,5 +257,5 @@ function generateRelationships (
     })
     .join('\n')
 
-  return getTemplate('relationships', [toPascalCase(name), relationshipList])
+  return getTemplate('relationships', [toPascalCase(prefixedName), relationshipList])
 }
